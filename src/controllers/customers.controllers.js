@@ -49,7 +49,7 @@ export async function updateCustomers (req, res){
         WHERE id=$5;`,
         [name, phone, cpf, birthday, id]
         )
-        return res.sendStatus(201);
+        return res.sendStatus(200);
     } catch (err) {
         return res.status(500).send(err.message);
     };
