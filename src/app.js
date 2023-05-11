@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import gamesRouter from "../src/routes/games.router.js";
+import customersRouter from "../src/routes/customers.router.js"
 
 // Criando o servidor
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(gamesRouter);
+app.use(customersRouter);
 
 // App esperando requisições
 const PORT = 5000;
