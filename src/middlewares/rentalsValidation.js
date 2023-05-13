@@ -20,9 +20,6 @@ export async function rentalValidation(req, res, next) {
 
             const gameExists = await db.query(`SELECT * FROM games WHERE id=$1;`, [gameId]);
             if (gameExists.rows.length === 0) return res.sendStatus(400);
-
-            const rentals = await db.query(`SELECT * FROM rentals WHERE "gameId" = $1;`, [gameId])
-            if (rentals.rowCount >= gameExists.stockTotal) return res.sendStatus(400);
         } else {
             const idExists = await db.query(`SELECT * FROM rentals WHERE id=$1;`, [id]);
             if (!idExists) return res.sendStatus(404);        

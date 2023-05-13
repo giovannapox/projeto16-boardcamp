@@ -46,6 +46,9 @@ export async function postRentals (req, res){
     
     try {
         const price = await db.query(`SELECT games."pricePerDay" FROM games WHERE id=$1;`, [gameId]);
+        
+        const rentals = await db.query(`SELECT * FROM rentals WHERE "gameId" = $1;`, [gameId])
+        if (rentals.rowCount >= price.stockTotal) return res.sendStatus(400);
         const pricePerDay = price.rows[0].pricePerDay;
 
         const originalPrice = (daysRented * pricePerDay);
