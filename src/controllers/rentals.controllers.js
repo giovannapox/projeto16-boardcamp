@@ -45,10 +45,8 @@ export async function postRentals (req, res){
     const rentDate = dayjs().format('YYYY-MM-DD');
     
     try {
+
         const price = await db.query(`SELECT games."pricePerDay" FROM games WHERE id=$1;`, [gameId]);
-        
-        const rentals = await db.query(`SELECT * FROM rentals WHERE "gameId" = $1;`, [gameId])
-        if (rentals.rowCount >= price.stockTotal) return res.sendStatus(400);
         const pricePerDay = price.rows[0].pricePerDay;
 
         const originalPrice = (daysRented * pricePerDay);
@@ -75,7 +73,7 @@ export async function postReturn (req, res){
         if (rentals.rows[0].delayFee !== null) return res.sendStatus(400);
         const rentalsRows = rentals.rows[0];
         const priceDay = (rentalsRows.originalPrice / rentalsRows.daysRented);
-        const notDelay = ((rentalsRows.daysRented - 1) * 86400000);
+        const notDelay = ((rentalsRows.daysRented) * 86400000);
         
         let delayFee = Math.floor((((new Date(returnDate))  - new Date(rentalsRows.rentDate) - notDelay) / 86400000)) * priceDay;
         if(delayFee < 0) delayFee = 0;
