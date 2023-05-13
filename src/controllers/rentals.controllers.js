@@ -9,8 +9,32 @@ export async function getRentals (req, res){
         JOIN customers ON customers.id = "customerId"
         JOIN games ON games.id = "gameId"
         ;`);
+        const rentalsRows = rentals.rows;
         
-        return res.send(rentals.rows);
+        let rentalsObj = [];
+        rentalsRows.forEach((rentals) => {
+            const obj = {
+                id: rentals.id,
+                customerId: rentals.customerId,
+                gameId: rentals.gameId,
+                rentDate: rentals.rentDate,
+                daysRented: rentals.daysRented,
+                returnDate: rentals.returnDate,
+                originalPrice: rentals.originalPrice,
+                delayFee: rentals.delayFee,
+                customer: {
+                    id: rentals.customerId,
+                    name: rentals.customerName
+                },
+                game: {
+                    id: rentals.gameId,
+                    name: rentals.gameName
+                }
+            };
+            rentalsObj.push(obj);
+        })
+
+        return res.send(rentalsObj);
     } catch (err) {
         return res.status(500).send(err.message);
     };

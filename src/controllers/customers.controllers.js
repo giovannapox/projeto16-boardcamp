@@ -5,7 +5,7 @@ export async function getCustomers(req, res) {
     try {
         const customers = await db.query(`SELECT * FROM customers;`);
         const customersRows = customers.rows;
-        console.log(customersRows)
+        
         let customerObj = [];
         customersRows.forEach((customer) => {
             const obj = {
@@ -18,7 +18,6 @@ export async function getCustomers(req, res) {
             customerObj.push(obj);
         })
 
-        console.log(customerObj)
         return res.send(customerObj);
     } catch (err) {
         return res.status(500).send(err.message);
