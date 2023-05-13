@@ -9,6 +9,7 @@ export async function getRentals (req, res){
         JOIN customers ON customers.id = "customerId"
         JOIN games ON games.id = "gameId"
         ;`);
+        
         return res.send(rentals.rows);
     } catch (err) {
         return res.status(500).send(err.message);
